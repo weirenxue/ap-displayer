@@ -1,0 +1,24 @@
+#import-ap-xlsx {
+    display: inline;
+    padding-right: 5px;
+}
+
+.icon-bt {
+    cursor: pointer;
+}
+
+
+.table-fixed thead th {
+    position: sticky;
+    top: -5px;
+}
+.table-fixed td {
+    vertical-align: middle;
+}
+
+.action-on {
+    color: blue;
+}
+.action-off {
+    color: gray;
+}

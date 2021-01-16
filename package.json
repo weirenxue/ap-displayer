@@ -1,0 +1,23 @@
+{
+  "name": "apmgr",
+  "version": "1.0.0",
+  "description": "W",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "WRXue",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.2",
+    "electron-squirrel-startup": "^1.0.0",
+    "jquery": "^3.5.1",
+    "node-rdp": "^1.0.1",
+    "node-stream-zip": "^1.12.0",
+    "open": "^7.3.1",
+    "xlsx-populate": "^1.21.0"
+  },
+  "devDependencies": {
+    "electron": "^11.2.0"
+  }
+}
