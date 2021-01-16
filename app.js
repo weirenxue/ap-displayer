@@ -51,6 +51,7 @@ $(function(){
     $('#xlsx-password').on('keypress', pressEnter);
     $('#select-sysNameE, #select-protocolE').on('change', selectFilterChanged);
     $('#keyword').on('keyup', keywordFilter);
+    $('#all-password-ff').on('click', allPasswordFF);
 });
 
 
@@ -118,6 +119,7 @@ async function handleFile(){
 
 function fillTable(objs) {
     let trs = [];
+    let passwordBlind = $('#all-password-ff').hasClass('blind');
     for (let obj in objs) {
         let ap = objs[obj];
         let tr = $(document.createElement('tr'));
@@ -127,7 +129,7 @@ function fillTable(objs) {
         tr.append($(document.createElement('td')).addClass('protocolE').text(ap.protocolE));
         tr.append($(document.createElement('td')).addClass('uriE').text(ap.uriE));
         tr.append($(document.createElement('td')).addClass('accountE').text(ap.accountE));
-        tr.append($(document.createElement('td')).addClass('passwordE').append($('<input>').attr('type', 'password').attr('readonly', true).addClass('form-control-plaintext').val(ap.passwordE)));
+        tr.append($(document.createElement('td')).addClass('passwordE').append(' ').append($('<input>').attr('type', passwordBlind ? 'password' : 'text').attr('readonly', true).addClass('form-control-plaintext').val(ap.passwordE)));
         tr.append($(document.createElement('td')).addClass('descE').text(ap.descE));
         if (ap['protocolE'] === 'rdp') {
             tr.append($(document.createElement('td')).html('<div class="icon-bt p-rdp action-off"><i class="fas fa-desktop"></i></div>'));
@@ -140,6 +142,18 @@ function fillTable(objs) {
     }
     $('tbody', '#ap-table').empty().append(trs);
     actionReg();
+}
+
+function allPasswordFF(){
+    if ($(this).hasClass('blind')) {
+        $(this).removeClass('blind');
+        $(this).empty().append('<i class="fas fa-eye"></i>');
+        $(".passwordE input").attr('type', 'text');
+    } else {
+        $(this).addClass('blind');
+        $(this).empty().append('<i class="fas fa-eye-slash"></i>');
+        $(".passwordE input").attr('type', 'password');
+    }
 }
 
 function actionReg() {
@@ -238,7 +252,18 @@ function keywordFilter(){
                 content = $(this).text();
             }
             copy(content);
-            console.log(content);
+        }
+    });
+    $('.passwordE').on('dblclick', function(){
+        let input = $('input', $(this));
+        let inputType = input.attr('type');
+        switch (inputType) {
+            case 'password':
+                input.attr('type', 'text');
+                break;
+            case 'text':
+                input.attr('type', 'password');
+                break;
         }
     });
 }
