@@ -2,6 +2,7 @@ const rdp = require('node-rdp');
 const { dialog } = require('electron').remote;
 const XlsxPopulate = require('xlsx-populate');
 const open = require('open'); 
+const copy = require('copy-text-to-clipboard');
 
 function rdpConnect(uri, username, password, thenFun){
     rdp({
@@ -227,5 +228,18 @@ function keywordFilter(){
         });
     }
     fillTable(keywordFilteredAp);
+    // 表格做好再註冊事件。
+    $('td').on('mouseup', function(e){
+        if ( e.button === 2) {
+            let content = '';
+            if ($(this).hasClass('passwordE')) {
+                content = $('input', $(this)).val();
+            } else {
+                content = $(this).text();
+            }
+            copy(content);
+            console.log(content);
+        }
+    });
 }
 

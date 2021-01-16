@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
+    "copy-text-to-clipboard": "^2.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "jquery": "^3.5.1",
     "node-rdp": "^1.0.1",
