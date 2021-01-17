@@ -4,8 +4,8 @@ const path = require('path');
 let win = null;
 function createWindow () {
     win = new BrowserWindow({
-        width: 1200,
-        height: 1200,
+        width: 1024,
+        height: 768,
         icon: path.join(__dirname, 'wrx512.ico'),
         closable: false,
         webPreferences: {
@@ -24,6 +24,8 @@ function createWindow () {
         e.preventDefault();
         win.hide();
     });
+
+    win.setMenu(null);
 
     createTray();
 }

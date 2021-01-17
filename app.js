@@ -222,24 +222,22 @@ function selectFilterChanged(){
 }
 
 function keywordFilter(){
-    if (filteredAp.length === 0) {
-        fillTable(filteredAp);
-        return;
-    }
     let keywordFilteredAp = filteredAp.slice();
-    let content = $('#keyword').val();
-    if (content) {
-        let keywords = content.split(',');
-        keywordFilteredAp = keywordFilteredAp.filter(e => {
-            for (let index in keywords) {
-                let keyword = keywords[index];
-                if (e.uriE.includes(keyword))
-                    return true;
-                if (e.descE.includes(keyword))
-                    return true;
-            }
-            return false;
-        });
+    if (keywordFilteredAp.length !== 0) {
+        let content = $('#keyword').val();
+        if (content) {
+            let keywords = content.split(',');
+            keywordFilteredAp = keywordFilteredAp.filter(e => {
+                for (let index in keywords) {
+                    let keyword = keywords[index];
+                    if (e.uriE.includes(keyword))
+                        return true;
+                    if (e.descE.includes(keyword))
+                        return true;
+                }
+                return false;
+            });
+        }
     }
     fillTable(keywordFilteredAp);
     // 表格做好再註冊事件。
@@ -266,5 +264,6 @@ function keywordFilter(){
                 break;
         }
     });
+    $('#ap-count').text(`${keywordFilteredAp.length}/${ap.length}`);
 }
 
