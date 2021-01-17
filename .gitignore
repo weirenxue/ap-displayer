@@ -1,4 +1,6 @@
 *.xlsx
+*win32-x64
+installer64
 
 # Logs
 logs
