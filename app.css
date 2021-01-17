@@ -15,10 +15,3 @@
 .table-fixed td {
     vertical-align: middle;
 }
-
-.action-on {
-    color: blue;
-}
-.action-off {
-    color: gray;
-}

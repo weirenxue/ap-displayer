@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray } = require('electron');
+const { app, BrowserWindow, Menu, Tray, globalShortcut } = require('electron');
 const path = require('path');
 
 let win = null;
@@ -25,6 +25,15 @@ function createWindow () {
         win.hide();
     });
 
+    globalShortcut.register('CommandOrControl+R', function() {
+        win.reload();
+    });
+    globalShortcut.register('CommandOrControl+E', function() {
+        win.removeAllListeners('close');
+        win.setClosable(true);
+        win.close();
+    })
+    
     win.setMenu(null);
 
     createTray();
@@ -41,7 +50,16 @@ function createTray() {
         },
         {type:'separator'}, // 分隔線
         {
+            label: 'Reload',
+            accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl+R',
+            click() {
+                win.reload();
+                win.show();
+            }
+        },
+        {
             label: 'Exit',
+            accelerator: process.platform === 'darwin' ? 'Cmd+E' : 'Ctrl+E',
             click() {
                 win.removeAllListeners('close');
                 win.setClosable(true);

@@ -109,9 +109,12 @@ async function handleFile(){
         return;
     }
     if (ap.length > 0) {
-        alertDiv.text('檔案成功開啟');
+        alertDiv.text('檔案成功開啟 ... 此提示將於 5 秒鐘後隱藏');
         alertDiv.addClass('alert-success');
         $('#xlsx-password').val('');
+        setTimeout(function(){
+            alertDiv.addClass('d-none');
+        }, 5000);
     }
     fillSelect(ap);
     $('#select-sysNameE').trigger('change');
@@ -132,7 +135,7 @@ function fillTable(objs) {
         tr.append($(document.createElement('td')).addClass('passwordE').append(' ').append($('<input>').attr('type', passwordBlind ? 'password' : 'text').attr('readonly', true).addClass('form-control-plaintext').val(ap.passwordE)));
         tr.append($(document.createElement('td')).addClass('descE').text(ap.descE));
         if (ap['protocolE'] === 'rdp') {
-            tr.append($(document.createElement('td')).html('<div class="icon-bt p-rdp action-off"><i class="fas fa-desktop"></i></div>'));
+            tr.append($(document.createElement('td')).html('<div class="icon-bt p-rdp"><i class="fas fa-desktop"></i></div>'));
         } else if (ap['protocolE'] === 'http' || ap['protocolE'] === 'https') {
             tr.append($(document.createElement('td')).html('<div class="icon-bt p-web"><i class="fas fa-globe"></i></div>'));
         } else if (ap['protocolE'] === 'mssql') {
@@ -162,9 +165,7 @@ function actionReg() {
         let pkE = $(this).parents('tr:first').data('primarykey');
         let thisAp = ap.find(e => e.pkE == pkE);
         iconBt = $('.p-rdp', $(this).parents('tr:first'));
-        iconBt.removeClass('action-off').addClass('action-on');
         rdpConnect(thisAp.uriE, thisAp.accountE, thisAp.passwordE, function(){
-            iconBt.removeClass('action-on').addClass('action-off');
         });
     });
     // 若為網頁應用，則開啟網頁。
