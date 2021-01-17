@@ -7,6 +7,7 @@ function createWindow () {
         width: 1200,
         height: 1200,
         icon: path.join(__dirname, 'wrx512.ico'),
+        closable: false,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
@@ -16,7 +17,12 @@ function createWindow () {
     win.loadFile('index.html');
 
     win.on('minimize', () => {
-        win.hide()
+        win.hide();
+    });
+
+    win.on('close', (e) => {
+        e.preventDefault();
+        win.hide();
     });
 
     createTray();
@@ -26,15 +32,17 @@ function createTray() {
     appIcon = new Tray(path.join(__dirname, 'wrx512.ico'));
     const contextMenu = Menu.buildFromTemplate([
         {
-            label: '顯示',
+            label: 'Show',
             click() {
                 win.show();
             }
         },
+        {type:'separator'}, // 分隔線
         {
-            label: '離開',
+            label: 'Exit',
             click() {
                 win.removeAllListeners('close');
+                win.setClosable(true);
                 win.close();
             }
         }
@@ -46,6 +54,7 @@ function createTray() {
             win.show()
         }
     });
+    // 不等待雙擊，否則單擊反應速度很慢
     appIcon.setIgnoreDoubleClickEvents(true);
     appIcon.setToolTip('A/P Displayer');
     appIcon.setContextMenu(contextMenu);
