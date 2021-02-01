@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray, globalShortcut } = require('electron');
+const { app, BrowserWindow, Menu, Tray, globalShortcut, dialog } = require('electron');
 const path = require('path');
 const ChildProcess = require('child_process')
 
@@ -56,7 +56,6 @@ function createWindow () {
         width: 1024,
         height: 768,
         icon: path.join(__dirname, 'wrx512.ico'),
-        closable: false,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
@@ -66,12 +65,20 @@ function createWindow () {
     win.loadFile('index.html');
 
     win.on('minimize', () => {
-        win.hide();
     });
 
     win.on('close', (e) => {
-        e.preventDefault();
-        win.hide();
+        const choice = dialog.showMessageBoxSync(null,
+            {
+                type: 'question',
+                buttons: ['Just Hide', 'Quit'],
+                title: 'Confirm',
+                message: 'What do you want to do?',
+            });
+        if (choice == 0) { // 如果選了第一個按鈕
+            e.preventDefault();
+            win.hide();
+        }
     });
 
     globalShortcut.register('CommandOrControl+R', function() {

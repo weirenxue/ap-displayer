@@ -7,6 +7,12 @@
     cursor: pointer;
 }
 
+.icon-terminal {
+    color: white; 
+    background-color: rgb(26, 25, 25); 
+    padding: 2px;
+    border-radius: 3px;
+}
 
 .table-fixed thead th {
     position: sticky;

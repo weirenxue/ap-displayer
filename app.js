@@ -89,26 +89,25 @@ async function handleFile(){
     let password = $('#xlsx-password').val();
     alertDiv = $('.alert');
     // 移除class為alert-*。
-    alertDiv.removeClass('d-none').removeClass(function (index, className) {
+    alertDiv.removeClass(function (index, className) {
         return (className.match (/\balert-\S+/g) || []).join(' ');
     });
     if (!filePath) {
         alertDiv.text('請先選擇檔案');
         alertDiv.addClass('alert-danger');
+        alertDiv.removeClass('d-none')
         return;
     }
     ap = await getAp(filePath, password);
     if (ap === null) {
         alertDiv.text('確認密碼是否正確，若無密碼則無須輸入密碼');
         alertDiv.addClass('alert-danger');
-        return;
-    }
-    if (ap.length === 0) {
+        ap = []
+    } else if (ap.length === 0) {
         alertDiv.text('無資料');
         alertDiv.addClass('alert-warning');
-        return;
-    }
-    if (ap.length > 0) {
+        ap = []
+    } else if (ap.length > 0) {
         alertDiv.text('檔案成功開啟 ... 此提示將於 5 秒鐘後隱藏');
         alertDiv.addClass('alert-success');
         $('#xlsx-password').val('');
@@ -116,6 +115,7 @@ async function handleFile(){
             alertDiv.addClass('d-none');
         }, 5000);
     }
+    alertDiv.removeClass('d-none')
     fillSelect(ap);
     $('#select-sysNameE').trigger('change');
 }
@@ -140,6 +140,12 @@ function fillTable(objs) {
             tr.append($(document.createElement('td')).html('<div class="icon-bt p-web"><i class="fas fa-globe"></i></div>'));
         } else if (ap['protocolE'] === 'mssql') {
             tr.append($(document.createElement('td')).html('<div class="icon-bt p-db"><i class="fas fa-database"></i></div>'));
+        } else if (ap['protocolE'] === 'smb') {
+            tr.append($(document.createElement('td')).html('<div class="icon-bt p-smb"><i class="fas fa-folder-open"></i></div>'));
+        } else if (ap['protocolE'] === 'ssh') {
+            tr.append($(document.createElement('td')).html('<div class="icon-bt p-ssh" style=""><i class="fas fa-terminal icon-terminal"></i></div>'));
+        } else {
+            tr.append($(document.createElement('td')).html('<div class="icon-bt p-other"></div>'));
         }
         trs.push(tr);
     }
