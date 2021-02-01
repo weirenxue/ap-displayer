@@ -51,6 +51,20 @@ function handleSquirrelEvent() {
     }
 }
 let win = null;
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
+    app.quit();
+} else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+        // Someone tried to run a second instance, we should focus our window.
+        if (win) {
+            win.show();
+            win.focus();
+        }
+    })
+    // Create myWindow, load the rest of the app, etc...
+    app.whenReady().then(createWindow);
+}
 function createWindow () {
     win = new BrowserWindow({
         width: 1024,
@@ -135,8 +149,6 @@ function createTray() {
     appIcon.setToolTip('A/P Displayer');
     appIcon.setContextMenu(contextMenu);
 }
-
-app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
     console.log('window-all-closed')
