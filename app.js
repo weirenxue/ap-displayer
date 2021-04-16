@@ -3,6 +3,7 @@ const { dialog } = require('electron').remote;
 const XlsxPopulate = require('xlsx-populate');
 const open = require('open'); 
 const copy = require('copy-text-to-clipboard');
+const child_process = require("child_process")
 
 function rdpConnect(uri, username, password, thenFun){
     rdp({
@@ -10,6 +11,26 @@ function rdpConnect(uri, username, password, thenFun){
         username: username,
         password: password
     }).then(thenFun);
+}
+
+function sshConnect(uri, username, password, thenFun){
+    let sshPawn = child_process.spawn('putty.exe', ['-ssh', `${username}@${uri}`, '-pw', `${password}`])
+    sshPawn.on("error", function(e){
+        switch(e.code) {
+            case 'ENOENT': // Error NO ENTry
+                dialog.showMessageBoxSync(null,
+                    {
+                        type: 'warning',
+                        buttons: ['OK'],
+                        title: 'Confirm',
+                        message: 'Please check if putty.exe is installed.',
+                    });
+                break;
+        }
+    });
+    sshPawn.on("close", function(code){
+        console.log("timeout exited with code " + code)
+    });
 }
 
 // 抓取ap，宣告為async才能使用await Promise，
@@ -134,6 +155,9 @@ function fillTable(objs) {
         tr.append($(document.createElement('td')).addClass('accountE').text(ap.accountE));
         tr.append($(document.createElement('td')).addClass('passwordE').append(' ').append($('<input>').attr('type', passwordBlind ? 'password' : 'text').attr('readonly', true).addClass('form-control-plaintext').val(ap.passwordE)));
         tr.append($(document.createElement('td')).addClass('descE').text(ap.descE));
+        tr.append($(document.createElement('td')).addClass('osE').text(ap.osE));
+        tr.append($(document.createElement('td')).addClass('comNameE').text(ap.comNameE));
+        tr.append($(document.createElement('td')).addClass('hostTypeE').text(ap.hostTypeE));
         if (ap['protocolE'] === 'rdp') {
             tr.append($(document.createElement('td')).html('<div class="icon-bt p-rdp"><i class="fas fa-desktop"></i></div>'));
         } else if (ap['protocolE'] === 'http' || ap['protocolE'] === 'https') {
@@ -170,7 +194,6 @@ function actionReg() {
     $('.p-rdp').on('click', function(){
         let pkE = $(this).parents('tr:first').data('primarykey');
         let thisAp = ap.find(e => e.pkE == pkE);
-        iconBt = $('.p-rdp', $(this).parents('tr:first'));
         rdpConnect(thisAp.uriE, thisAp.accountE, thisAp.passwordE, function(){
         });
     });
@@ -179,6 +202,13 @@ function actionReg() {
         let pkE = $(this).parents('tr:first').data('primarykey');
         let thisAp = ap.find(e => e.pkE == pkE);
         oepnWeb(thisAp.uriE);
+    });
+    $('.p-ssh').on('click', function(){
+        console.log(123)
+        let pkE = $(this).parents('tr:first').data('primarykey');
+        let thisAp = ap.find(e => e.pkE == pkE);
+        sshConnect(thisAp.uriE, thisAp.accountE, thisAp.passwordE, function(){
+        });
     });
 }
 
