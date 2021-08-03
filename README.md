@@ -29,7 +29,7 @@
 
 ### 如何使用？
 
-1. 下載專案中的 `tempalate.xlsx` 檔案並開啟，會看到有兩個工作表:page_facing_up::page_facing_up:，分別為 `metadata`、`ap`。
+1. 下載 [tempalate.xlsx](https://firebasestorage.googleapis.com/v0/b/gh-pages-88339.appspot.com/o/Tool-IT-%E7%9A%84%E5%A5%BD%E5%B9%AB%E6%89%8B-%E5%B8%B3%E5%AF%86%E9%A1%AF%E7%A4%BA%E5%99%A8%2Ftemplate.xlsx?alt=media&token=7d97e0da-ac7b-40a9-b4b8-af8a80390ce5) 檔案並開啟，會看到有兩個工作表:page_facing_up::page_facing_up:，分別為 `metadata`、`ap`。
 
     - `metadata` 工作表  
         已經有定義好的一排標頭 (順序請勿更動)，根據定義增加紀錄即可。此工作表用來定義應用程式中顯示資料的相關設定。
