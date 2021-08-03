@@ -1,29 +1,59 @@
 {
-  "name": "apmgr",
-  "version": "1.0.1",
-  "description": "W",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "build": "electron-packager . APDisplayer --out APDisplayer --overwrite --plateform=win32 --arch=x64 --icon=wrx512.ico --prune=true --squirrel-install --ignore=node_modules/electron-* --ignore=APDisplayer-win32-x64 --version-string.CompanyName=WRXue --appCopyright=\"Copyright (C) 2021 WRXue. All rights reserved.\"",
-    "pack": "grunt"
+  "name": "ap-displayer",
+  "version": "2.0.0",
+  "private": true,
+  "author": {
+      "name": "Wei-Ren Xue",
+      "email": "weirenxue@gmail.com",
+      "url": "https://weirenxue.github.io"
   },
-  "author": "WRXue",
-  "license": "ISC",
+  "homepage": "./",
+  "main": "main.js",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.2",
-    "copy-text-to-clipboard": "^2.2.0",
-    "electron-packager": "^15.2.0",
-    "electron-squirrel-startup": "^1.0.0",
-    "jquery": "^3.5.1",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "bootstrap": "^5.0.2",
+    "electron-is-dev": "^2.0.0",
     "node-rdp": "^1.0.1",
-    "node-stream-zip": "^1.12.0",
-    "open": "^7.3.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.0.0-beta.4",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.1.2",
     "xlsx-populate": "^1.21.0"
   },
+  "scripts": {
+    "start": "set BROWSER=none && react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron-start": "electron .",
+    "electron-build": "npm run build && node build.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "devDependencies": {
-    "electron": "^11.2.0",
-    "grunt": "^1.3.0",
-    "grunt-electron-installer": "^2.1.0"
+    "electron": "^13.1.7",
+    "electron-builder": "^22.11.7"
   }
 }
