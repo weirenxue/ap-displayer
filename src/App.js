@@ -1,21 +1,21 @@
 import './App.css';
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import XlsxReader from './components/XlsxReader';
 import APTable from './components/APTable';
 import APFilter from './components/APFilter';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useSelector } from 'react-redux';
 
 function App() {
-    const [content, setConent] = useState({});
-    const [filteredContent, setFilteredContent] = useState({});
+    const {ap} = useSelector(state => state.xlsxContent.origin);
     return (
         <div style={{ marginLeft: '20px', marginRight: '20px', marginTop: '10px' }}>
-            <XlsxReader getContent={(content) => setConent(content)}/>
-            { content['ap'] && <APFilter content={content} getFilteredContent={(content) => setFilteredContent(content)}/> }
-            { content['ap'] && <APTable content={filteredContent}/> }
+            <XlsxReader />
+            { ap && <APFilter /> }
+            { ap && <APTable /> }
         </div>
     );
 }

@@ -24,6 +24,7 @@ function createWindow () {
     } else {
         // 產品階段直接讀取 React 打包好的
         mainWindow.loadFile('./build/index.html');
+        mainWindow.setMenu(null);
         // mainWindow.webContents.openDevTools()
     }
 
@@ -36,7 +37,7 @@ function createWindow () {
                 title: 'Confirm',
                 message: 'What do you want to do?',
             });
-        if (choice == 0) { // 如果選了第一個按鈕 ('Just Hide')
+        if (choice === 0) { // 如果選了第一個按鈕 ('Just Hide')
             e.preventDefault();
             mainWindow.hide();
         }
@@ -52,8 +53,6 @@ function createWindow () {
         mainWindow.close();
     })
     */
-
-    mainWindow.setMenu(null);
 
     createTray(mainWindow);
     
@@ -101,7 +100,7 @@ app.on('window-all-closed', function () {
 // code. You can also put them in separate files and require them here.
 
 function createTray(win) {
-    appIcon = new Tray(path.join(__dirname, 'icon_s.png'));
+    let appIcon = new Tray(path.join(__dirname, 'icon_s.png'));
     const contextMenu = Menu.buildFromTemplate([
         {
             label: 'Show',

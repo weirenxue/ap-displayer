@@ -1,22 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { 
+    setXlsxFromSelectFilter
+} from '../models/actions';
 
 import { Form, Row, FloatingLabel } from 'react-bootstrap';
 
 const SelectFilter = (props) => {
-    const [content, setContent] = useState({});
+    const {metadata, ap} = useSelector(state => state.xlsxContent.origin);
+    const dispatch = useDispatch();
     const [filterValue, setFilterValue] = useState([]);
     const [filterColumn, setFilterColumn] = useState([]);
 
     let filterSelect = useRef([]);
 
-    // 當 props.content 的值變動時，需要更新 content state
     useEffect(() => {
-        setContent(props.content);
-    }, [props.content]);
-
-    useEffect(() => {
-        if (content['metadata'] !== undefined) {
-            let filterColumn_copied = content['metadata'].filter((e) => e['filterPriority'] !== '')
+        if (metadata !== undefined) {
+            let filterColumn_copied = metadata.filter((e) => e['filterPriority'] !== '')
             // 根據優先權大到小排序
             .sort((a, b) => {
                 let defaultPriority = -9999;
@@ -30,11 +31,11 @@ const SelectFilter = (props) => {
             // 需要篩選的欄位
             setFilterColumn(filterColumn_copied);
         }
-    }, [content]);
+    }, [metadata]);
 
     useEffect(() => {
-        let content_copied = Object.assign({}, content);
-        content_copied['ap'] = content_copied['ap'] && content_copied['ap'].filter((e) => {
+        let content_copied = ap.slice();
+        content_copied = content_copied && content_copied.filter((e) => {
             let ret = true;
             filterColumn.forEach((_e, _i) => {
                 // 若為 * 代表全選
@@ -43,15 +44,17 @@ const SelectFilter = (props) => {
             });
             return ret;
         });
-
-        props.getFilteredContent(content_copied);
-    }, [filterValue, content, filterColumn])
+        dispatch(setXlsxFromSelectFilter({
+            metadata: metadata,
+            ap: content_copied
+        }));
+    }, [filterValue, filterColumn, ap, metadata, dispatch])
 
     // Select 元素
     let selects = filterColumn && filterColumn.map((e, i, self) => {
         let apHeader = e['apHeader']
         let displayHeader = e['displayHeader']
-        let options = content['ap'] && content['ap'].filter((e) => {
+        let options = ap && ap.filter((e) => {
             // 連動調整 Select 選項
             let ret = true;
             self.forEach((__e, __i) => {
@@ -89,7 +92,7 @@ const SelectFilter = (props) => {
     });
 
     return (
-        <Form.Group as={Row} className={props.className}>
+        <Form.Group as={Row} {...props}>
             {selects}
         </Form.Group>
     );

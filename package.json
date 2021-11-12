@@ -1,11 +1,11 @@
 {
   "name": "ap-displayer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "author": {
-      "name": "Wei-Ren Xue",
-      "email": "weirenxue@gmail.com",
-      "url": "https://weirenxue.github.io"
+    "name": "Wei-Ren Xue",
+    "email": "weirenxue@gmail.com",
+    "url": "https://weirenxue.github.io"
   },
   "homepage": "./",
   "main": "main.js",
@@ -22,7 +22,10 @@
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-beta.4",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
     "react-scripts": "4.0.3",
+    "redux": "^4.1.2",
+    "wait-on": "^6.0.0",
     "web-vitals": "^1.1.2",
     "xlsx-populate": "^1.21.0"
   },
@@ -31,7 +34,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-start": "electron .",
+    "electron-start": "wait-on tcp:3000 && electron .",
     "electron-build": "npm run build && node build.js"
   },
   "eslintConfig": {
@@ -54,6 +57,7 @@
   },
   "devDependencies": {
     "electron": "^13.1.7",
-    "electron-builder": "^22.11.7"
+    "electron-builder": "^22.11.7",
+    "electron-react-devtools": "^0.5.3"
   }
 }

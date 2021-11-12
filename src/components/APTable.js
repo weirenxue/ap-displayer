@@ -4,20 +4,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 import ActionIcon from './ActionIcon';
+import { useSelector } from 'react-redux';
 
 const clipboard = window.clipboard;
 
-const APTable = (props) => {
+const APTable = () => {
     const [unmaskColumn, setUnmaskColumn] = useState({});
+    const c = useSelector(state => state.xlsxContent.fromFilter);
     const [content, setContent] = useState({});
 
     // 當 props.content 的值變動時，需要更新 content state
     useEffect(() => {
-        setContent(props.content);
-    }, [props.content]);
+        setContent(c);
+    }, [c]);
 
-    const handleMaskIconClick = useCallback(
-        (header) => {
+    const handleMaskIconClick = useCallback((header) => {
             // 複製一個新的 unmaskColumn，否則等同直接修改 unmaskColumn，造成 React 不會更新畫面
             let unmaskColumn_copied = Object.assign({}, unmaskColumn);
             // 是否要 mask 
@@ -39,10 +40,8 @@ const APTable = (props) => {
                 return e;
             });
             setContent(content_copied);
-        }, [unmaskColumn, content]
-    );
-    const handleDataDoubleClick = useCallback(
-        (index, header) => {
+        }, [unmaskColumn, content]);
+    const handleDataDoubleClick = useCallback((index, header) => {
             // 複製一個新的 content，否則等同直接修改 content，造成 React 不會更新畫面
             let content_copied = Object.assign({}, content);
             
@@ -53,8 +52,7 @@ const APTable = (props) => {
             else if (headerIndex === -1) e['__mask'].push(header);
 
             setContent(content_copied);
-        }, [content]
-    );
+        }, [content]);
     let ths = content['metadata'] && 
         // 先 filter 掉要隱藏的欄位
         content['metadata'].filter((e) => e['hide'] === '')
